@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STEM AKADEMY - Apprendre autrement. Réussir durablement.</title>
+    
+    <!-- Intégration de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Police Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        // Configuration de Tailwind pour utiliser la police "Inter" et les couleurs de la charte
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'brand-dark-blue': '#001F3D',
+                        'brand-blue': '#005EA0',
+                        'brand-light-blue': '#EFF8FF',
+                        'brand-orange': '#E87A00',
+                        'brand-peach': '#FDEEDC',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-brand-light-blue text-slate-700 antialiased">
+
+    <!-- ===== HEADER ===== -->
+    <div id="header-placeholder"></div>
+
+    <main>
+        <!-- ===== HERO SECTION ===== -->
+        <section class="pt-32 pb-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-brand-dark-blue tracking-tight">
+                    Apprendre autrement.
+                    <span class="block text-brand-blue">Réussir durablement.</span>
+                </h1>
+                <p class="mt-6 max-w-2xl mx-auto text-lg text-slate-600">
+                    Des parcours d'apprentissage pratiques et personnalisés pour maîtriser les compétences technologiques les plus demandées.
+                </p>
+                
+                <!-- Cartes de cours -->
+                <div class="mt-12 grid gap-8 md:grid-cols-3">
+                    <!-- Carte 1 -->
+                    <div class="relative bg-brand-peach p-6 rounded-xl shadow-sm border border-orange-200 text-left flex flex-col">
+                        <div class="absolute top-0 right-0 transform translate-x-3 -translate-y-3">
+                            <span class="bg-blue-100 text-brand-blue text-xs font-bold px-3 py-1 rounded-full shadow-md">Bientôt</span>
+                        </div>
+                        <h3 class="font-bold text-lg text-brand-dark-blue mt-2">Introduction à Python</h3>
+                        <p class="mt-2 text-sm text-slate-600 flex-grow">Apprenez les bases de la programmation Python (variables, boucles, conditions) de manière ludique et concrète.</p>
+                        <p class="mt-4 pt-4 border-t border-orange-200/50 text-sm"><span class="font-bold text-brand-dark-blue">Projet :</span> Le Marché de Sandaga (Jeu de Négociation)</p>
+                    </div>
+                    <!-- Carte 2 -->
+                    <div class="relative bg-brand-peach p-6 rounded-xl shadow-sm border border-orange-200 text-left flex flex-col">
+                        <div class="absolute top-0 right-0 transform translate-x-3 -translate-y-3">
+                            <span class="bg-blue-100 text-brand-blue text-xs font-bold px-3 py-1 rounded-full shadow-md">Bientôt</span>
+                        </div>
+                        <h3 class="font-bold text-lg text-brand-dark-blue mt-2">Introduction au Machine Learning & NLP</h3>
+                        <p class="mt-2 text-sm text-slate-600 flex-grow">Découvrez comment les machines comprennent le langage humain en construisant un modèle capable d'analyser le Wolof.</p>
+                        <p class="mt-4 pt-4 border-t border-orange-200/50 text-sm"><span class="font-bold text-brand-dark-blue">Projet :</span> Classification de Sentiments en Wolof (Naive Bayes)</p>
+                    </div>
+                    <!-- Carte 3 -->
+                    <div class="relative bg-brand-peach p-6 rounded-xl shadow-sm border border-orange-200 text-left flex flex-col">
+                        <div class="absolute top-0 right-0 transform translate-x-3 -translate-y-3">
+                            <span class="bg-blue-100 text-brand-blue text-xs font-bold px-3 py-1 rounded-full shadow-md">Bientôt</span>
+                        </div>
+                        <h3 class="font-bold text-lg text-brand-dark-blue mt-2">Mathématiques pour le Machine Learning</h3>
+                        <p class="mt-2 text-sm text-slate-600 flex-grow">Démystifiez les concepts mathématiques essentiels derrière l'IA à travers un exemple que tout le monde connaît et apprécie.</p>
+                        <p class="mt-4 pt-4 border-t border-orange-200/50 text-sm"><span class="font-bold text-brand-dark-blue">Projet :</span> La Tasse d'Ataya Parfaite (Les Gradients démystifiés)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SECTION DÉMO INTERACTIVE ===== -->
+        <section class="py-20">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <div class="flex justify-center">
+                    <svg class="h-16 w-16 text-brand-blue" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" />
+                    </svg>
+                </div>
+                <h2 class="mt-4 text-3xl font-bold text-brand-dark-blue">Coder partout, tout le temps, zéro installation.</h2>
+                <p class="mt-4 text-lg text-slate-600">
+                    Avec nos <span class="font-semibold text-brand-dark-blue">Quest Notebooks</span>, apprenez autrement. Imaginez un livre qui vous parle et un coach qui vous guide, réunis en un seul endroit. Lancez-vous dans une quête d'apprentissage en un seul clic.
+                </p>
+                <div class="mt-8">
+                    <a href="./quest-player.html" class="inline-block px-8 py-4 bg-brand-orange text-white text-lg font-bold rounded-lg shadow-lg hover:bg-orange-600 transform hover:-translate-y-1 transition-all duration-300">
+                        Je me lance !
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SECTION MASTERCLASSES ===== -->
+        <section class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-12 items-center">
+                <!-- MISE À JOUR : Suppression de la classe scale-[1.4] -->
+                <div class="rounded-xl shadow-xl overflow-hidden aspect-video bg-brand-dark-blue">
+                    <img src="assets/images/masterclass.png" alt="Aperçu de l'interface des Masterclasses en ligne de STEM AKADEMY" class="w-full h-full object-contain">
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-brand-dark-blue">Vous êtes bloqué ? Accélérez votre parcours.</h2>
+                    <p class="mt-4 text-lg text-slate-600">
+                        Avec nos <span class="font-semibold text-brand-dark-blue">Masterclasses</span> en petit groupe, ne restez plus seul face au code. C'est l'expertise d'un professionnel qui vous guide et l'énergie d'une équipe qui vous soutient, réunis pour bâtir le projet qui fera la différence sur votre portfolio.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SECTION : APPROCHE DU BAOBAB ===== -->
+        <section class="py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-3xl font-bold text-brand-dark-blue">Approche du Baobab</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-600">
+                    Dans un monde technologique qui change chaque jour, apprendre un outil est temporaire. Comprendre un principe est éternel.
+                </p>
+                <!-- MISE À JOUR : Changement de text-left à text-center -->
+                <div class="mt-12 grid gap-8 md:grid-cols-3 text-center">
+                    <!-- Carte 1: Les Racines -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                        <h3 class="font-bold text-lg text-brand-dark-blue">Les racines de l’Intuition</h3>
+                        <p class="mt-2 text-slate-600">Avant toute théorie, l'apprenant doit "sentir" l’idée derriere le concept.</p>
+                    </div>
+                    <!-- Carte 2: Le Tronc -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                        <h3 class="font-bold text-lg text-brand-dark-blue">Le tronc de la Théorie</h3>
+                        <p class="mt-2 text-slate-600">On renforce l’intuition, on comprend les concepts, on ne mémorise pas.</p>
+                    </div>
+                    <!-- Carte 3: Les Branches -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                        <h3 class="font-bold text-lg text-brand-dark-blue">Les branches de l’Application</h3>
+                        <p class="mt-2 text-slate-600">La théorie devient un outil de resolution de problèmes concrets.</p>
+                    </div>
+                </div>
+                <p class="mt-12 max-w-3xl mx-auto text-lg text-slate-600 italic">
+                    Nous ne formons pas pour des métiers qui risquent de disparaître, mais nous bâtissons des compétences qui resteront pérennes.
+                </p>
+            </div>
+        </section>
+        
+        <!-- ===== SECTION LISTE D'ATTENTE ===== -->
+        <section id="contact" class="py-20 bg-white">
+            <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-3xl font-bold text-brand-dark-blue">Rejoignez notre écosystème</h2>
+                <p class="mt-4 text-lg text-slate-600">
+                    Que vous soyez un professionnel visant une carrière de pointe comme AI Engineer, un parent visionnaire préparant votre enfant aux métiers de demain, ou un expert passionné désireux de transmettre votre savoir, votre place est au sein de notre futur écosystème.
+                </p>
+                <p class="mt-4 text-lg text-slate-600">
+                    Nous vous invitons à rejoindre notre liste d'attente pour être les premiers informés et bénéficier d'un accès prioritaire.
+                </p>
+                
+                <!-- Formulaire Netlify pour la liste d'attente -->
+                <form name="waiting-list" method="POST" data-netlify="true" class="mt-8 text-left max-w-lg mx-auto">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-slate-700">Nom complet</label>
+                        <input type="text" name="name" id="name" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-blue focus:border-brand-blue">
+                    </div>
+                    <div class="mt-4">
+                        <label for="email" class="block text-sm font-medium text-slate-700">Adresse e-mail</label>
+                        <input type="email" name="email" id="email" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-blue focus:border-brand-blue">
+                    </div>
+
+                    <div class="mt-4">
+                        <fieldset>
+                            <legend class="block text-sm font-medium text-slate-700">Je suis intéressé(e) en tant que :</legend>
+                            <div class="mt-2 space-y-2">
+                                <div class="flex items-center">
+                                    <input id="role-apprenant" name="role" type="radio" value="apprenant" required class="h-4 w-4 text-brand-blue border-slate-300 focus:ring-brand-blue">
+                                    <label for="role-apprenant" class="ml-3 block text-sm text-slate-700">Apprenant</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input id="role-tuteur" name="role" type="radio" value="tuteur" class="h-4 w-4 text-brand-blue border-slate-300 focus:ring-brand-blue">
+                                    <label for="role-tuteur" class="ml-3 block text-sm text-slate-700">Tuteur/Expert</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input id="role-parent" name="role" type="radio" value="parent" class="h-4 w-4 text-brand-blue border-slate-300 focus:ring-brand-blue">
+                                    <label for="role-parent" class="ml-3 block text-sm text-slate-700">Parent</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="mt-6">
+                        <button type="submit" class="w-full px-6 py-3 bg-brand-blue text-white font-semibold rounded-lg shadow-md hover:bg-brand-dark-blue transition-colors">
+                            Je rejoins !
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <div id="footer-placeholder"></div>
+    
+    <!-- Script pour charger les composants -->
+    <script src="./assets/js/components.js"></script>
+
+</body>
+</html>

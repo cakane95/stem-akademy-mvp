@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr" class="bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quest Player - STEM AKADEMY</title>
+    
+    <!-- Intégration de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Police Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        // Configuration de Tailwind
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'brand-dark-blue': '#001F3D',
+                        'brand-blue': '#005EA0',
+                        'brand-light-blue': '#DBF0FF',
+                        'brand-orange': '#E87A00',
+                        'brand-peach': '#F8DCBF',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<!-- L'attribut data-page-type="quest" est important pour charger le bon header -->
+<body class="text-slate-800" data-page-type="quest">
+
+    <!-- Le header spécifique à la quête sera injecté ici par components.js -->
+    <div id="header-placeholder"></div>
+
+    <!-- CONTENU PRINCIPAL SIMPLIFIÉ -->
+    <main class="pt-24 pb-28">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white p-8 rounded-xl shadow-sm text-center">
+                <p class="text-lg text-slate-700">Vous êtes sur la page quest-player.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Le footer sera injecté ici par components.js -->
+    <!-- <div id="footer-placeholder"></div> -->
+    
+    <!-- Scripts -->
+    <script src="./assets/js/components.js"></script>
+    <!-- Le script quest-player.js sera ajouté plus tard -->
+    <!-- <script src="./assets/js/quest-player.js"></script> -->
+
+</body>
+</html>
