@@ -1,0 +1,69 @@
+{
+    "questTitle": "Quête Démo d'Introduction",
+    "questCells": [
+      {
+        "type": "markdown",
+        "title": "📝 Introduction à la Quête",
+        "content": "<h1>Bienvenue dans la Quête Démo !</h1><p>Cette démo présente un notebook interactif. Vous pouvez lire du texte, exécuter du code Python et répondre à des questions pour progresser.</p><p>Le code statique dans les instructions, comme celui-ci, est mis en évidence pour une meilleure lisibilité :</p>",
+        "staticCode": "# Ceci est un bloc de code statique\nimport pandas as pd\n\ndf = pd.DataFrame({'col1': [1, 2], 'col2': [3, 4]})\nprint(df)"
+      },
+      {
+        "type": "code-py",
+        "title": "🔬 Démonstration : Exécution de code",
+        "initialCode": "# Vous pouvez exécuter ce code Python !\nimport sys\nprint(f\"Bonjour depuis Python {sys.version} !\")\nprint(\"Essayez de modifier le message et de ré-exécuter.\")"
+      },
+      {
+        "type": "mcq",
+        "question": "En Python, quelle fonction est utilisée pour afficher du texte à l'écran ?",
+        "options": [
+          "display()",
+          "print()",
+          "show()",
+          "output()"
+        ],
+        "correctAnswer": "print()"
+      },
+      {
+        "type": "markdown",
+        "title": "Préparation à l'Exercice",
+        "content": "<h2>Exercice Pratique</h2><p>Maintenant, complétons un exercice. Le système simulera une évaluation de type <a href=\"https://github.com/microsoft/pybryt\" target=\"_blank\">PyBryt</a>, qui vérifie non seulement le résultat final, mais aussi la manière dont vous l'avez obtenu.</p>"
+      },
+      {
+        "type": "exercice-py",
+        "title": "✍️ Exercice : Déclaration de variable",
+        "instructions": "Déclarez une variable nommée 'message' et assignez-lui la valeur \"STEM AKADEMY\". Ensuite, affichez la valeur de la variable.",
+        "initialCode": "# Votre code ici\n\n",
+        "validationRules": {
+          "mockPyBrytResult": "Excellent ! La variable 'message' a été correctement déclarée et affichée.",
+          "mockPyBrytFailure": "Presque ! Assurez-vous d'avoir une variable nommée 'message' et que vous utilisez la fonction print() pour l'afficher."
+        }
+      },
+      {
+        "type": "markdown",
+        "title": "🔥 Défi Rapide !",
+        "content": "<h2>Prêt pour un test de vitesse ?</h2><p>Vous avez 30 secondes pour répondre à chaque question qui suit. Bonne chance !</p>"
+      },
+      {
+        "type": "rapid-mcq",
+        "timeLimit": 30,
+        "questions": [
+          {
+            "question": "Quel est le résultat de l'opération `5 * 3` en Python ?",
+            "options": ["15", "8", "53", "Erreur"],
+            "correctAnswer": "15"
+          },
+          {
+            "question": "Quel symbole est utilisé pour les commentaires sur une seule ligne en Python ?",
+            "options": ["//", "/* */", "#", "---"],
+            "correctAnswer": "#"
+          },
+          {
+            "question": "Laquelle de ces structures de données est immuable (non modifiable) ?",
+            "options": ["Liste", "Dictionnaire", "Tuple", "Ensemble"],
+            "correctAnswer": "Tuple"
+          }
+        ]
+      }
+    ]
+  }
+  
