@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nos Parcours - STEM AKADEMY</title>
+    
+    <!-- Intégration de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Police Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        // Configuration de Tailwind
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'brand-dark-blue': '#001F3D',
+                        'brand-blue': '#005EA0',
+                        'brand-light-blue': '#DBF0FF',
+                        'brand-orange': '#E87A00',
+                        'brand-peach': '#F8DCBF',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-brand-light-blue text-slate-700 antialiased">
+
+    <!-- Le header sera injecté ici par components.js -->
+    <div id="header-placeholder"></div>
+
+    <main>
+        <!-- ===== SECTION TITRE ===== -->
+        <section class="bg-white py-12">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-4xl font-extrabold text-brand-dark-blue tracking-tight">
+                    Nos Parcours d'Apprentissage
+                </h1>
+                <p class="mt-4 text-lg text-slate-600">
+                    Choisissez un parcours et commencez votre aventure pour maîtriser de nouvelles compétences.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== SECTION LISTE DES PARCOURS ===== -->
+        <section class="py-12">
+            <div id="parcours-container" class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Le contenu des parcours sera injecté ici par parcours.js -->
+                <div class="text-center py-16 bg-white rounded-xl shadow-sm border border-slate-200">
+                    <p class="text-slate-500">Les parcours d'apprentissage seront bientôt disponibles ici.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Le footer sera injecté ici par components.js -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Script pour charger les composants réutilisables -->
+    <script src="./assets/js/components.js"></script>
+    <!-- Vous pourrez ajouter le script spécifique à cette page ici -->
+    <!-- <script src="./assets/js/parcours.js"></script> -->
+
+</body>
+</html>
