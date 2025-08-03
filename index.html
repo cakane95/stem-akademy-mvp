@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>STEM AKADEMY - Apprendre autrement. Réussir durablement.</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='%23005EA0'><path stroke-linecap='round' stroke-linejoin='round' d='M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9' /></svg>">
     
     <!-- Intégration de Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -24,9 +25,9 @@
                     colors: {
                         'brand-dark-blue': '#001F3D',
                         'brand-blue': '#005EA0',
-                        'brand-light-blue': '#EFF8FF',
+                        'brand-light-blue': '#DBF0FF',
                         'brand-orange': '#E87A00',
-                        'brand-peach': '#FDEEDC',
+                        'brand-peach': '#F8DCBF',
                     }
                 }
             }
@@ -84,7 +85,7 @@
         </section>
 
         <!-- ===== SECTION DÉMO INTERACTIVE ===== -->
-        <section class="py-20">
+        <section class="py-20 bg-brand-light-blue">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <div class="flex justify-center">
                     <svg class="h-16 w-16 text-brand-blue" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -103,10 +104,61 @@
             </div>
         </section>
 
-        <!-- ===== SECTION MASTERCLASSES ===== -->
+        <!-- ===== SECTION BIDEEW CHATBOT ===== -->
         <section class="py-20 bg-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-12 items-center">
-                <!-- MISE À JOUR : Suppression de la classe scale-[1.4] -->
+                <div>
+                    <h2 class="text-3xl font-bold text-brand-dark-blue">Rencontrez Bideew, votre étoile guide.</h2>
+                    <p class="mt-4 text-lg text-slate-600">
+                        Intégré à chaque quête, notre tuteur IA, <span class="font-semibold text-brand-dark-blue">Bideew</span>, a été entraîné pour enseigner et expliquer, pas pour donner les réponses. Il vous servira de guide et vous fournira du pseudo-code pour vous aider dans votre aventure en programmation.
+                    </p>
+                </div>
+                <!-- MISE À JOUR : La maquette est maintenant un lien cliquable -->
+                <a href="./quest-player.html" class="block group">
+                    <div class="bg-white rounded-2xl shadow-xl p-4 border border-slate-200 group-hover:shadow-2xl group-hover:-translate-y-1 transition-all duration-300">
+                        <div class="flex-shrink-0 p-3 bg-slate-800 text-white rounded-t-lg flex justify-between items-center">
+                            <div>
+                                <h3 class="font-bold">Bideew</h3>
+                                <p class="text-xs text-slate-300">Votre tuteur IA</p>
+                            </div>
+                        </div>
+                        <div class="p-4 space-y-3">
+                            <div class="flex">
+                                <div class="bg-slate-200 text-slate-800 p-3 rounded-lg max-w-xs text-sm">
+                                    <p>Bonjour ! Je suis Bideew, votre étoile guide. Un concept du cours vous semble flou ? Demandez-moi de l'éclairer.</p>
+                                </div>
+                            </div>
+                             <div class="flex justify-end">
+                                <div class="bg-brand-blue text-white p-3 rounded-lg max-w-xs text-sm">
+                                    <p>Explique-moi les boucles `for`.</p>
+                                </div>
+                            </div>
+                            <div class="flex">
+                                <div class="bg-slate-200 text-slate-800 p-3 rounded-lg max-w-xs text-sm">
+                                    <p>Bien sûr ! Imagine un tailleur pour la Tabaski. Pour chaque client, il répète les mêmes actions : prendre les mesures et les noter dans son carnet. Une boucle `for`, c'est pareil :</p>
+                                    <pre class="mt-2 bg-slate-100 p-2 rounded text-xs"><code>POUR chaque client DANS liste_clients:<br>  PRENDRE les mesures<br>  NOTER dans le carnet</code></pre>
+                                    <p class="mt-2">Comme tu le vois, une boucle `for` te permet de dire à un ordinateur de répéter une action pour chaque élément. Ça te permet aussi de réduire les lignes de code à écrire.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-2 border-t border-slate-200">
+                            <div class="flex space-x-2">
+                                <input type="text" placeholder="Posez votre question..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" disabled>
+                                <button class="bg-blue-600 text-white p-2 rounded-lg flex-shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+        
+        <!-- ===== SECTION MASTERCLASSES ===== -->
+        <section class="py-20 bg-brand-light-blue">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-12 items-center">
                 <div class="rounded-xl shadow-xl overflow-hidden aspect-video bg-brand-dark-blue">
                     <img src="assets/images/masterclass.png" alt="Aperçu de l'interface des Masterclasses en ligne de STEM AKADEMY" class="w-full h-full object-contain">
                 </div>
@@ -120,26 +172,25 @@
         </section>
 
         <!-- ===== SECTION : APPROCHE DU BAOBAB ===== -->
-        <section class="py-20">
+        <section class="py-20 bg-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <h2 class="text-3xl font-bold text-brand-dark-blue">Approche du Baobab</h2>
                 <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-600">
                     Dans un monde technologique qui change chaque jour, apprendre un outil est temporaire. Comprendre un principe est éternel.
                 </p>
-                <!-- MISE À JOUR : Changement de text-left à text-center -->
                 <div class="mt-12 grid gap-8 md:grid-cols-3 text-center">
                     <!-- Carte 1: Les Racines -->
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <div class="bg-slate-100 p-6 rounded-xl shadow-sm border border-slate-200">
                         <h3 class="font-bold text-lg text-brand-dark-blue">Les racines de l’Intuition</h3>
                         <p class="mt-2 text-slate-600">Avant toute théorie, l'apprenant doit "sentir" l’idée derriere le concept.</p>
                     </div>
                     <!-- Carte 2: Le Tronc -->
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <div class="bg-slate-100 p-6 rounded-xl shadow-sm border border-slate-200">
                         <h3 class="font-bold text-lg text-brand-dark-blue">Le tronc de la Théorie</h3>
                         <p class="mt-2 text-slate-600">On renforce l’intuition, on comprend les concepts, on ne mémorise pas.</p>
                     </div>
                     <!-- Carte 3: Les Branches -->
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <div class="bg-slate-100 p-6 rounded-xl shadow-sm border border-slate-200">
                         <h3 class="font-bold text-lg text-brand-dark-blue">Les branches de l’Application</h3>
                         <p class="mt-2 text-slate-600">La théorie devient un outil de resolution de problèmes concrets.</p>
                     </div>
@@ -151,7 +202,7 @@
         </section>
         
         <!-- ===== SECTION LISTE D'ATTENTE ===== -->
-        <section id="contact" class="py-20 bg-white">
+        <section id="contact" class="py-20 bg-brand-light-blue">
             <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <h2 class="text-3xl font-bold text-brand-dark-blue">Rejoignez notre écosystème</h2>
                 <p class="mt-4 text-lg text-slate-600">
