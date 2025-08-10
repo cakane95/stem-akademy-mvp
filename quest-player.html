@@ -5,8 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quest Player - STEM AKADEMY</title>
     
+    <!-- Lottie Web Component -->
+    <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js" type="module"></script>
+
+
     <!-- Intégration de Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="assets/css/tailwindcss.js"></script>
     
     <!-- Police Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -50,12 +54,14 @@
             perspective: 1000px; /* Ajoute de la perspective pour l'effet 3D */
         }
         .flip-card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.95s cubic-bezier(.2,.8,.2,1); /* ✅ plus lent + easing smooth */
+        transform-style: preserve-3d;
+        will-change: transform; /* ✅ hint perf */
         }
+
         .flip-card.is-flipped .flip-card-inner {
             transform: rotateY(180deg);
         }
@@ -92,6 +98,49 @@
 
     <!-- Le header spécifique à la quête sera injecté ici par components.js -->
     <div id="header-placeholder"></div>
+
+    <!-- Mission chooser (affiché au chargement) -->
+    <section id="mission-chooser" class="fixed inset-0 flex items-center justify-center bg-brand-dark-blue text-white z-40">
+        <div class="bg-white/5 rounded-3xl shadow-xl p-8 border border-white/10 text-center max-w-2xl">
+            <h1 class="text-2xl md:text-3xl font-semibold">
+                Choisissez votre mission : Dans quel univers voulez-vous appliquer la puissance de Python ?
+            </h1>
+            <p class="mt-2 text-slate-200/90">
+                Sélectionnez un domaine pour charger la quête adaptée.
+            </p>
+            <div class="mt-6 flex flex-wrap justify-center gap-3">
+                <button data-domain="telecoms"
+                    class="bg-white text-[#001F3D] font-semibold py-3 px-6 rounded-full hover:bg-gray-200 transition">
+                    Télécoms 📱
+                </button>
+                <button data-domain="finance"
+                    class="bg-white text-[#001F3D] font-semibold py-3 px-6 rounded-full hover:bg-gray-200 transition">
+                    Finance 💰
+                </button>
+                <button data-domain="ecommerce"
+                    class="bg-white text-[#001F3D] font-semibold py-3 px-6 rounded-full hover:bg-gray-200 transition">
+                    E-commerce 🛍️
+                </button>
+                <button data-domain="agriculture"
+                    class="bg-white text-[#001F3D] font-semibold py-3 px-6 rounded-full hover:bg-gray-200 transition">
+                    Agriculture 🌽
+                </button>
+                <button data-domain="sante"
+                    class="bg-white text-[#001F3D] font-semibold py-3 px-6 rounded-full hover:bg-gray-200 transition">
+                    Santé ⚕️
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Loader Overlay -->
+    <div id="loader-overlay" class="fixed inset-0 bg-[#001F3D] flex flex-col items-center justify-center z-50 hidden" data-done="0">
+        <div id="loader-anim-container"></div> <!-- ✅ hôte où on (re)crée le <dotlottie-wc> -->
+        <p class="text-white text-lg mt-4">Nous préparons votre aventure...</p>
+    </div>
+  
+
+    
 
     <!-- CONTENEUR PRINCIPAL DU NOTEBOOK -->
     <main class="pt-24 pb-28">
@@ -152,8 +201,15 @@
     </div>
 
     <!-- Scripts -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.5.0/css/xterm.css">
+    <script src="https://cdn.jsdelivr.net/npm/xterm@5.5.0/lib/xterm.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.10.0/lib/xterm-addon-fit.min.js"></script>
+
+    <script src="./assets/js/terminal.js"></script>
+
     <script src="./assets/js/components.js"></script>
-    <script src="./assets/js/quest-player.js"></script>
+    <script type="module" src="./assets/js/quest-player.js"></script>
+
 
 </body>
 </html>

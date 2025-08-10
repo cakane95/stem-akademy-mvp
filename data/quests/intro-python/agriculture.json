@@ -1,0 +1,68 @@
+{
+    "questTitle": "Mission Agriculture : Variables Python",
+    "questCells": [
+      {
+        "type": "markdown",
+        "title": "🌽 Bienvenue dans la mission Agriculture/Élevage",
+        "content": "<h1>Bienvenue dans votre mission Agriculture/Élevage !</h1><p>Vous travaillez dans une ferme avicole. Aujourd'hui, vous allez apprendre à manipuler des <em>variables</em> Python pour suivre la production de vos poules et l'état de vos bâtiments.</p>"
+      },
+      {
+        "type": "code-py",
+        "title": "🔍 Exemple : Suivi des variables avicoles",
+        "initialCode": "# Déclarer des variables simples\nnombre_poules = 150\ntaux_de_ponte = 85.5  # en pourcentage\nbatiment_est_ventile = True\n\nprint(nombre_poules)\nprint(taux_de_ponte)\nprint(batiment_est_ventile)"
+      },
+      {
+        "type": "mcq",
+        "question": "Quelle variable est de type booléen dans cet exemple ?",
+        "options": [
+          "nombre_poules",
+          "taux_de_ponte",
+          "batiment_est_ventile",
+          "print()"
+        ],
+        "correctAnswer": "batiment_est_ventile"
+      },
+      {
+        "type": "markdown",
+        "title": "🛠️ Préparation à l'exercice",
+        "content": "<p>Vous allez maintenant créer vos propres variables pour représenter l'état de votre élevage.</p>"
+      },
+      {
+        "type": "exercice-py",
+        "title": "✍️ Exercice : Déclarer vos variables d'élevage",
+        "instructions": "Déclarez trois variables :\n1. `nombre_poules` (entier)\n2. `taux_de_ponte` (nombre à virgule)\n3. `batiment_est_ventile` (booléen)\nPuis affichez-les avec `print()`.",
+        "initialCode": "# Votre code ici\n",
+        "validationRules": {
+          "mockPyBrytResult": "Bravo ✅ Les variables sont correctement déclarées et affichées.",
+          "mockPyBrytFailure": "Vérifiez que les trois variables existent et sont affichées avec print()."
+        }
+      },
+      {
+        "type": "markdown",
+        "title": "⚡ Quiz rapide",
+        "content": "<p>Répondez vite à ces questions pour tester vos connaissances sur les variables Python.</p>"
+      },
+      {
+        "type": "rapid-mcq",
+        "timeLimit": 15,
+        "questions": [
+          {
+            "question": "Quel type correspond à `True` en Python ?",
+            "options": ["int", "str", "bool", "float"],
+            "correctAnswer": "bool"
+          },
+          {
+            "question": "Quelle variable pourrait stocker un pourcentage de ponte ?",
+            "options": ["int", "float", "bool", "str"],
+            "correctAnswer": "float"
+          },
+          {
+            "question": "Comment afficher le nombre de poules ?",
+            "options": ["print(nombre_poules)", "show(nombre_poules)", "display(nombre_poules)", "echo(nombre_poules)"],
+            "correctAnswer": "print(nombre_poules)"
+          }
+        ]
+      }
+    ]
+  }
+  

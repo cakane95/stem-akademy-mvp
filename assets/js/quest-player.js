@@ -1,323 +1,216 @@
-// Attend que le contenu de la page soit entièrement chargé avant d'exécuter le script
+// assets/js/quest-player.js
+// Orchestration : mission → loader (6s) → fetch JSON → rendu progressif
+// Intègre Pyodide (worker persistant v0.28.1) + xterm par cellule Python
+
+import { resolveQuestJson } from './missionsRouter.js';
+import { renderCell, startRapidMcq, handleMcqCheck } from './quest-ui.js';
+//import { createTerminalIn } from './terminal.js';
+import { createIOForTerminal } from './termHelpers.js';
+import { addXP, nextCell, getIndex, resetProgress, setTotalCells, updateProgressBar } from './quest-xp.js';
+
+let questCells = [];
+
+// Worker + stdin SAB (partagés entre cellules)
+let pyWorker = null;
+const INPUT_CAP = 4096;
+let sabCtrl, sabData, ctrl, dataBytes;
+
+// Précharge Pyodide en arrière-plan
+let resolvePyReady;
+const pyReadyP = new Promise(res => (resolvePyReady = res));
+
+function bootPyodideInBackground() {
+  if (pyWorker) return;
+  pyWorker = new Worker('/assets/js/workers/py-worker.js');
+
+  pyWorker.onmessage = (ev) => {
+    const { type } = ev.data || {};
+    if (type === 'ready') resolvePyReady(true);
+  };
+  pyWorker.onerror = (e) => {
+    console.error('[py-worker error]', e);
+    resolvePyReady(true); // on ne bloque pas l’UI
+  };
+
+  // SAB stdin
+  sabCtrl = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT);
+  sabData = new SharedArrayBuffer(INPUT_CAP);
+  ctrl = new Int32Array(sabCtrl);
+  dataBytes = new Uint8Array(sabData);
+  Atomics.store(ctrl, 0, -1);
+  pyWorker.postMessage({ type: 'setup_stdin', sabCtrl, sabData });
+
+  // init pyodide
+  pyWorker.postMessage({ type: 'init' });
+}
+
+/* ------------------------- Loader helpers ------------------------- */
+function showLoader() {
+  const overlay = document.getElementById('loader-overlay');
+  if (!overlay) return;
+  overlay.classList.remove('hidden');
+
+  const host = document.getElementById('loader-anim-container');
+  if (host) {
+    host.innerHTML = `
+      <dotlottie-wc
+        id="loader-anim"
+        src="https://lottie.host/26d1914f-e195-4e30-8253-df4417c5b3d4/R1VPlibtfh.lottie"
+        style="width: 360px; height: 360px"
+        autoplay
+        loop
+      ></dotlottie-wc>`;
+  }
+}
+function hideLoader() {
+  const overlay = document.getElementById('loader-overlay');
+  if (!overlay) return;
+  try { overlay.querySelector('#loader-anim')?.stop?.(); } catch {}
+  overlay.classList.add('hidden');
+}
+
+/* ----------------------------- Runtime ---------------------------- */
 document.addEventListener('DOMContentLoaded', () => {
+  const chooser           = document.getElementById('mission-chooser');
+  const notebookContainer = document.getElementById('notebook-container');
+  const footer            = document.getElementById('footer');
 
-    // --- ÉLÉMENTS DU DOM ---
-    const notebookContainer = document.getElementById('notebook-container');
-    const footer = document.getElementById('footer');
-    
-    // Éléments du Chatbot
-    const chatbotContainer = document.getElementById('chatbot-container');
-    const chatbotBackdrop = document.getElementById('chatbot-backdrop');
-    const openChatbotBtn = document.getElementById('open-chatbot-btn');
-    const closeChatbotBtn = document.getElementById('close-chatbot-btn');
-    const chatbotWindow = document.getElementById('chatbot-window');
+  bootPyodideInBackground();     // dès l’arrivée
+  chooser?.classList.remove('hidden');
 
-    // --- ÉTAT DE L'APPLICATION ---
-    let questCellsData = []; 
-    let currentCellIndex = 0;
-    let userXP = 0;
+  chooser?.addEventListener('click', async (e) => {
+    const btn = e.target.closest('button[data-domain]');
+    if (!btn) return;
 
-    // --- FONCTION PRINCIPALE D'INITIALISATION ---
-    async function initQuestPlayer() {
-        notebookContainer.innerHTML = '<p class="text-center text-slate-500">Chargement de la quête...</p>';
+    const domain = btn.dataset.domain;
+    localStorage.setItem('last-domain', domain);
+    chooser.classList.add('hidden');
 
-        const questPath = './data/quests/intro-python/demo-quest-v1.json';
+    showLoader();
 
-        try {
-            const response = await fetch(questPath);
-            if (!response.ok) {
-                throw new Error(`Erreur HTTP ! Statut : ${response.status}`);
-            }
-            const questData = await response.json();
-            questCellsData = questData.questCells;
-            notebookContainer.innerHTML = ''; 
-            
-            renderNextCell();
+    let resolveAnimPlayed;
+    const animPlayedP = new Promise(res => (resolveAnimPlayed = res));
+    setTimeout(() => resolveAnimPlayed(true), 6000); // joue au moins 6s
 
-        } catch (error) {
-            console.error("Erreur de chargement de la quête:", error);
-            notebookContainer.innerHTML = '<p class="text-center text-red-500">Impossible de charger le contenu de la quête.</p>';
-        }
+    try {
+      const url = resolveQuestJson(domain);
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+
+      await Promise.all([pyReadyP, animPlayedP]);
+
+      hideLoader();
+      startQuest(data);
+    } catch (err) {
+      hideLoader();
+      console.error(err);
+      notebookContainer.innerHTML = `<p class="text-red-600">Erreur de chargement: ${err.message}</p>`;
+    }
+  });
+
+  // délégation boutons "Continuer" et check MCQ
+  notebookContainer?.addEventListener('click', (e) => {
+    const nextBtn = e.target.closest('.next-step-btn');
+    if (nextBtn) {
+      addXP(10);
+      nextCell();
+      renderNextCell();
+      return;
+    }
+    const checkBtn = e.target.closest('.check-mcq-btn');
+    if (checkBtn) {
+      const cellWrapper = checkBtn.closest('.quest-cell');
+      const idx = Number(cellWrapper?.dataset.cellIndex || '0');
+      handleMcqCheck(cellWrapper, questCells[idx]);
+    }
+  });
+
+  function startQuest(quest) {
+    resetProgress();
+    questCells = Array.isArray(quest.questCells) ? quest.questCells : [];
+    setTotalCells(questCells.length);
+    updateProgressBar(0, questCells.length);
+
+    notebookContainer.innerHTML = '';
+    renderNextCell();
+  }
+
+  function renderNextCell() {
+    const idx   = getIndex();
+    const total = questCells.length;
+
+    if (idx >= total) {
+      updateProgressBar(total, total);
+      footer?.classList?.remove('translate-y-full');
+      return;
     }
 
-    // --- MOTEUR D'AFFICHAGE ---
-    function renderNextCell() {
-        if (currentCellIndex >= questCellsData.length) {
-            updateProgress(); 
-            footer.classList.remove('translate-y-full');
-            return;
-        }
+    updateProgressBar(idx, total);
 
-        const cellData = questCellsData[currentCellIndex];
-        const cellWrapper = document.createElement('div');
-        cellWrapper.classList.add('quest-cell');
-        cellWrapper.dataset.cellIndex = currentCellIndex;
+    const cellData = questCells[idx];
+    const el = renderCell(cellData, idx);
+    notebookContainer.appendChild(el);
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-        let cellHtml = '';
-
-        switch (cellData.type) {
-            case 'markdown':
-                // MISE À JOUR : Logique pour gérer le code statique séparément
-                let markdownContent = `
-                    <div class="bg-white rounded-xl shadow-sm p-6 border border-slate-200">
-                        <h2 class="text-lg font-bold text-slate-900 mb-4">${cellData.title || ''}</h2>
-                        <div class="prose prose-slate max-w-none">
-                            ${cellData.content}
-                        </div>`;
-                
-                if (cellData.staticCode) {
-                    markdownContent += `
-                        <div class="mt-4 bg-slate-100 p-4 rounded-md overflow-auto">
-                            <pre><code class="language-python">${cellData.staticCode}</code></pre>
-                        </div>`;
-                }
-
-                markdownContent += `
-                        <div class="mt-6 flex justify-end">
-                            <button class="next-step-btn bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-blue-700">Continuer</button>
-                        </div>
-                    </div>`;
-                cellHtml = markdownContent;
-                break;
-            case 'code-py':
-                cellHtml = `
-                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                        <div class="p-6">
-                            <h2 class="text-lg font-bold text-slate-900 mb-4">${cellData.title}</h2>
-                            <div class="h-52 bg-brand-dark-blue text-white font-mono p-4 rounded-md overflow-auto"><pre><code>${cellData.initialCode}</code></pre></div>
-                            <div class="mt-4 flex justify-end">
-                                <button class="next-step-btn bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-blue-700">Exécuter</button>
-                            </div>
-                        </div>
-                        <div class="bg-slate-900 p-4 text-sm text-slate-200 font-mono"><pre>&gt; La sortie apparaîtra ici...</pre></div>
-                    </div>`;
-                break;
-            case 'exercice-py':
-                 cellHtml = `
-                     <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                        <div class="p-6">
-                            <h2 class="text-lg font-bold text-slate-900 mb-2">${cellData.title}</h2>
-                            <p class="text-slate-600 mb-4">${cellData.instructions}</p>
-                            <div class="h-52 bg-brand-dark-blue text-white font-mono p-4 rounded-md overflow-auto"><pre><code>${cellData.initialCode}</code></pre></div>
-                            <div class="mt-4 flex justify-end">
-                                <button class="next-step-btn bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-blue-700">Vérifier</button>
-                            </div>
-                        </div>
-                        <div class="bg-slate-900 p-4 text-sm text-slate-200 font-mono"><pre>&gt; La sortie apparaîtra ici...</pre></div>
-                    </div>`;
-                break;
-            case 'mcq':
-                 const optionsHtml = cellData.options.map((opt) => `
-                    <label class="flex items-center p-3 border border-slate-300 rounded-lg hover:bg-slate-50 cursor-pointer">
-                        <input type="radio" name="mcq-${currentCellIndex}" value="${opt}" class="h-4 w-4 text-blue-600">
-                        <span class="ml-3 text-slate-700">${opt}</span>
-                    </label>
-                `).join('');
-                cellHtml = `
-                    <div class="bg-white rounded-xl shadow-sm p-6 border border-slate-200">
-                        <p class="text-slate-600 mb-4 font-semibold">${cellData.question}</p>
-                        <div class="space-y-3">${optionsHtml}</div>
-                        <div class="feedback-area mt-4 p-3 rounded-lg text-center font-semibold" style="display: none;"></div>
-                        <div class="mt-4 flex justify-end">
-                            <button class="check-mcq-btn bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-blue-700">Vérifier</button>
-                        </div>
-                    </div>`;
-                break;
-            
-            case 'rapid-mcq':
-                cellHtml = `
-                    <div class="flip-card">
-                        <div class="flip-card-inner">
-                            <!-- Face Avant : Le Quiz -->
-                            <div class="flip-card-front">
-                                <div class="bg-white rounded-xl shadow-sm p-6 border border-slate-200 relative">
-                                    <div class="absolute top-4 right-4 font-bold text-lg text-brand-orange" id="timer-display-${currentCellIndex}">⏳ ${cellData.timeLimit}s</div>
-                                    <h2 class="text-lg font-bold text-slate-900 mb-4">Quiz Rapide</h2>
-                                    <div id="rapid-mcq-content-${currentCellIndex}">
-                                        <!-- La question actuelle sera injectée ici -->
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Face Arrière : Le Score -->
-                            <div class="flip-card-back">
-                                 <div class="bg-slate-800 text-white rounded-xl shadow-xl p-6 flex flex-col items-center justify-center h-full">
-                                    <h2 class="text-2xl font-bold">Score Final</h2>
-                                    <p id="rapid-mcq-score-${currentCellIndex}" class="text-5xl font-extrabold text-brand-orange my-4">0/${cellData.questions.length}</p>
-                                    <p id="rapid-mcq-feedback-${currentCellIndex}" class="mb-6">Félicitations !</p>
-                                    <button class="next-step-btn bg-orange-500 text-white font-semibold px-6 py-2 rounded-lg hover:bg-orange-600">Continuer</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                break;
-
-            default:
-                cellHtml = `<div class="bg-white p-4 rounded-lg shadow-sm border"><p class="text-red-500">Type de cellule inconnu : ${cellData.type}</p></div>`;
-        }
-        
-        cellWrapper.innerHTML = cellHtml;
-        notebookContainer.appendChild(cellWrapper);
-
-        if (cellData.type === 'rapid-mcq') {
-            startRapidMcq(cellWrapper.querySelector('.flip-card'), cellData);
-        }
-        
-        cellWrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        updateProgress();
-    }
-    
-    function startRapidMcq(cardElement, cellData) {
-        let currentQuestionIndex = 0;
-        let score = 0;
-        let timerId = null;
-        const cellIndex = parseInt(cardElement.closest('.quest-cell').dataset.cellIndex, 10);
-
-        const contentEl = cardElement.querySelector(`#rapid-mcq-content-${cellIndex}`);
-        const timerEl = cardElement.querySelector(`#timer-display-${cellIndex}`);
-        const flipCardInner = cardElement.querySelector('.flip-card-inner');
-
-        function showNextQuestion() {
-            clearInterval(timerId);
-
-            if (currentQuestionIndex >= cellData.questions.length) {
-                endQuiz();
-                return;
-            }
-
-            const questionData = cellData.questions[currentQuestionIndex];
-            let timeLeft = cellData.timeLimit;
-            timerEl.textContent = `⏳ ${timeLeft}s`;
-
-            const optionsHtml = questionData.options.map(opt => `
-                <label class="flex items-center p-3 border border-slate-300 rounded-lg hover:bg-slate-50 cursor-pointer">
-                    <input type="radio" name="rapid-mcq-q-${cellIndex}-${currentQuestionIndex}" value="${opt}" class="h-4 w-4 text-blue-600">
-                    <span class="ml-3 text-slate-700">${opt}</span>
-                </label>
-            `).join('');
-
-            contentEl.innerHTML = `
-                <p class="text-slate-600 mb-4 font-semibold">${questionData.question}</p>
-                <div class="space-y-3">${optionsHtml}</div>
-            `;
-            
-            const frontFaceContent = cardElement.querySelector('.flip-card-front > div');
-            flipCardInner.style.height = `${frontFaceContent.offsetHeight}px`;
-
-            timerId = setInterval(() => {
-                timeLeft--;
-                timerEl.textContent = `⏳ ${timeLeft}s`;
-                if (timeLeft <= 0) {
-                    handleAnswer(null);
-                }
-            }, 1000);
-        }
-
-        function handleAnswer(selectedValue) {
-            const questionData = cellData.questions[currentQuestionIndex];
-            if (selectedValue && selectedValue === questionData.correctAnswer) {
-                score++;
-            }
-            currentQuestionIndex++;
-            showNextQuestion();
-        }
-        
-        function endQuiz() {
-            clearInterval(timerId);
-            const scoreEl = cardElement.querySelector(`#rapid-mcq-score-${cellIndex}`);
-            scoreEl.textContent = `${score}/${cellData.questions.length}`;
-            userXP += score * 20; 
-            updateProgress();
-
-            const backFaceContent = cardElement.querySelector('.flip-card-back > div');
-            flipCardInner.style.height = `${backFaceContent.offsetHeight}px`;
-            cardElement.classList.add('is-flipped');
-        }
-
-        cardElement.addEventListener('click', (event) => {
-            const radio = event.target.closest('input[type="radio"]');
-            if (radio) {
-                handleAnswer(radio.value);
-            }
-        });
-
-        showNextQuestion();
+    if (cellData.type === 'rapid-mcq') {
+      startRapidMcq(el.querySelector('.flip-card'), cellData, () => {});
     }
 
-    function updateProgress() {
-        const progressBar = document.getElementById('progress-bar');
-        const xpCounter = document.getElementById('xp-counter');
-
-        const totalCells = questCellsData.length;
-        const completedCells = currentCellIndex;
-        const percentage = totalCells > 0 ? (completedCells / totalCells) * 100 : 0;
-        
-        if (progressBar) progressBar.style.width = `${percentage}%`;
-        if (xpCounter) xpCounter.textContent = `${userXP} XP`;
+    if (cellData.type === 'code-py' || cellData.type === 'exercice-py') {
+      wirePythonCell(el);
     }
+  }
 
-    // --- GESTION DES ÉVÉNEMENTS ---
-    notebookContainer.addEventListener('click', function(event) {
-        if (event.target.classList.contains('next-step-btn')) {
-            userXP += 10;
-            currentCellIndex++;
-            renderNextCell();
-        } else if (event.target.classList.contains('check-mcq-btn')) {
-            const cellWrapper = event.target.closest('.quest-cell');
-            const cellIndex = parseInt(cellWrapper.dataset.cellIndex, 10);
-            handleMcqCheck(cellWrapper, questCellsData[cellIndex]);
-        }
+  function wirePythonCell(cellEl) {
+    const termRoot = cellEl.querySelector('.terminal-root');
+    const { term } = window.createTerminalIn(termRoot);
+    const io = createIOForTerminal(term);
+
+    const editorEl = cellEl.querySelector('textarea[data-role="editor"]');
+    const initial  = editorEl.value;
+
+    const btnReplay = cellEl.querySelector('.btn-replay');
+    const btnRun    = cellEl.querySelector('.btn-run');
+
+    btnReplay?.addEventListener('click', () => {
+      editorEl.value = initial;
+      term.writeln('\x1b[36m— Code réinitialisé —\x1b[0m');
     });
 
-    function handleMcqCheck(cellWrapper, cellData) {
-        const feedbackArea = cellWrapper.querySelector('.feedback-area');
-        const selectedOption = cellWrapper.querySelector(`input[name="mcq-${currentCellIndex}"]:checked`);
-        const checkButton = cellWrapper.querySelector('.check-mcq-btn');
-
-        feedbackArea.style.display = 'block';
-
-        if (!selectedOption) {
-            feedbackArea.textContent = "Veuillez sélectionner une réponse.";
-            feedbackArea.className = 'feedback-area mt-4 p-3 rounded-lg text-center font-semibold bg-yellow-100 text-yellow-800';
-            return;
+    btnRun?.addEventListener('click', () => {
+      if (!pyWorker) {
+        term.writeln('\x1b[31m[erreur] Worker indisponible\x1b[0m');
+        return;
+      }
+      const onMsg = (ev) => {
+        const { type, data } = ev.data || {};
+        switch (type) {
+          case 'stdout': io.writeStdout(data); break;
+          case 'stderr': io.writeStderr(data); break;
+          case 'input_request': {
+            io.flushStdoutPartial();
+            io.requestOneLineFromTerminal().then((line) => {
+              const enc   = new TextEncoder();
+              const bytes = enc.encode(line);
+              let len = bytes.length;
+              if (len > dataBytes.byteLength) len = dataBytes.byteLength;
+              dataBytes.set(bytes.subarray(0, len), 0);
+              Atomics.store(ctrl, 0, len);
+              Atomics.notify(ctrl, 0, 1);
+            });
+            break;
+          }
+          case 'done':
+            io.flushStdIO();
+            pyWorker.removeEventListener('message', onMsg);
+            break;
         }
+      };
+      pyWorker.addEventListener('message', onMsg);
 
-        if (selectedOption.value === cellData.correctAnswer) {
-            feedbackArea.textContent = "Correct !";
-            feedbackArea.className = 'feedback-area mt-4 p-3 rounded-lg text-center font-semibold bg-green-100 text-green-800';
-            
-            cellWrapper.querySelectorAll('input[type="radio"]').forEach(input => input.disabled = true);
-            
-            checkButton.textContent = "Continuer";
-            checkButton.classList.remove('check-mcq-btn');
-            checkButton.classList.add('next-step-btn');
-        } else {
-            feedbackArea.textContent = "Incorrect. Essayez encore !";
-            feedbackArea.className = 'feedback-area mt-4 p-3 rounded-lg text-center font-semibold bg-red-100 text-red-800';
-        }
-    }
-
-    // --- LOGIQUE DU CHATBOT RESPONSIVE ---
-    function openChatbot() {
-        chatbotContainer.classList.remove('hidden');
-        setTimeout(() => {
-            chatbotBackdrop.classList.remove('hidden');
-            chatbotWindow.classList.remove('hidden');
-        }, 10);
-    }
-
-    function closeChatbot() {
-        chatbotBackdrop.classList.add('hidden');
-        chatbotWindow.classList.add('hidden');
-        setTimeout(() => {
-            chatbotContainer.classList.add('hidden');
-        }, 300);
-    }
-
-    openChatbotBtn.addEventListener('click', openChatbot);
-    closeChatbotBtn.addEventListener('click', closeChatbot);
-    chatbotBackdrop.addEventListener('click', closeChatbot);
-
-    // --- DÉMARRAGE DE L'APPLICATION ---
-    initQuestPlayer();
+      term.writeln('\x1b[36m— Exécution —\x1b[0m');
+      pyWorker.postMessage({ type: 'run', code: editorEl.value });
+    });
+  }
 });

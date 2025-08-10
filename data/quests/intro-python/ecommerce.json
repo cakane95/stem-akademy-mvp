@@ -1,0 +1,68 @@
+{
+    "questTitle": "Mission E-commerce : Variables Python",
+    "questCells": [
+      {
+        "type": "markdown",
+        "title": "🛍️ Bienvenue dans la mission E-commerce",
+        "content": "<h1>Bienvenue dans votre mission E-commerce !</h1><p>Vous travaillez pour une boutique en ligne. Aujourd'hui, vous allez apprendre à manipuler des <em>variables</em> Python pour stocker des informations comme le nom d'un article, son prix et sa disponibilité.</p>"
+      },
+      {
+        "type": "code-py",
+        "title": "🔍 Exemple : Déclaration de variables produits",
+        "initialCode": "# Déclarer des variables simples\nnom_article = \"Casque Bluetooth\"\nprix_article = 25000  # en FCFA\narticle_en_stock = False\n\nprint(nom_article)\nprint(prix_article)\nprint(article_en_stock)"
+      },
+      {
+        "type": "mcq",
+        "question": "Quelle est la bonne syntaxe pour créer une variable `prix_article` avec la valeur 50000 ?",
+        "options": [
+          "prix_article = 50000",
+          "50000 = prix_article",
+          "prix_article == 50000",
+          "var prix_article = 50000"
+        ],
+        "correctAnswer": "prix_article = 50000"
+      },
+      {
+        "type": "markdown",
+        "title": "🛠️ Préparation à l'exercice",
+        "content": "<p>Vous allez maintenant créer vos propres variables pour représenter un produit dans votre boutique en ligne.</p>"
+      },
+      {
+        "type": "exercice-py",
+        "title": "✍️ Exercice : Déclarer vos variables produit",
+        "instructions": "Déclarez trois variables :\n1. `nom_article` (chaîne de caractères)\n2. `prix_article` (entier)\n3. `article_en_stock` (booléen)\nPuis affichez-les avec `print()`.",
+        "initialCode": "# Votre code ici\n",
+        "validationRules": {
+          "mockPyBrytResult": "Parfait ✅ Vos variables sont bien déclarées et affichées.",
+          "mockPyBrytFailure": "Vérifiez que les trois variables existent et sont affichées avec print()."
+        }
+      },
+      {
+        "type": "markdown",
+        "title": "⚡ Quiz rapide",
+        "content": "<p>Répondez vite à ces questions pour tester vos connaissances sur les variables Python.</p>"
+      },
+      {
+        "type": "rapid-mcq",
+        "timeLimit": 15,
+        "questions": [
+          {
+            "question": "Quel type de donnée est False en Python ?",
+            "options": ["int", "str", "bool", "float"],
+            "correctAnswer": "bool"
+          },
+          {
+            "question": "Comment représenter une chaîne de caractères ?",
+            "options": ["'Produit'", "Produit", "Produit()", "`Produit`"],
+            "correctAnswer": "'Produit'"
+          },
+          {
+            "question": "Quelle fonction permet d'afficher le prix d’un article ?",
+            "options": ["print()", "show()", "display()", "echo()"],
+            "correctAnswer": "print()"
+          }
+        ]
+      }
+    ]
+  }
+  

@@ -1,0 +1,68 @@
+{
+    "questTitle": "Mission Santé : Variables Python",
+    "questCells": [
+      {
+        "type": "markdown",
+        "title": "⚕️ Bienvenue dans la mission Santé",
+        "content": "<h1>Bienvenue dans votre mission Santé !</h1><p>Vous travaillez dans un centre médical. Aujourd'hui, vous allez apprendre à manipuler des <em>variables</em> Python pour suivre les informations des patients et appliquer un protocole en fonction de leur état.</p>"
+      },
+      {
+        "type": "code-py",
+        "title": "🔍 Exemple : Suivi des variables médicales",
+        "initialCode": "# Déclarer des variables simples\nnom_patient = \"Awa Diop\"\ntemperature_corporelle = 37.8\npatient_a_jeun = True\n\nprint(nom_patient)\nprint(temperature_corporelle)\nprint(patient_a_jeun)"
+      },
+      {
+        "type": "mcq",
+        "question": "Quelle variable est de type chaîne de caractères dans cet exemple ?",
+        "options": [
+          "nom_patient",
+          "temperature_corporelle",
+          "patient_a_jeun",
+          "print()"
+        ],
+        "correctAnswer": "nom_patient"
+      },
+      {
+        "type": "markdown",
+        "title": "🛠️ Préparation à l'exercice",
+        "content": "<p>Vous allez maintenant créer vos propres variables pour représenter les données d'un patient.</p>"
+      },
+      {
+        "type": "exercice-py",
+        "title": "✍️ Exercice : Déclarer vos variables médicales",
+        "instructions": "Déclarez trois variables :\n1. `nom_patient` (chaîne de caractères)\n2. `temperature_corporelle` (nombre à virgule)\n3. `patient_a_jeun` (booléen)\nPuis affichez-les avec `print()`.",
+        "initialCode": "# Votre code ici\n",
+        "validationRules": {
+          "mockPyBrytResult": "Bravo ✅ Les variables sont correctement déclarées et affichées.",
+          "mockPyBrytFailure": "Vérifiez que les trois variables existent et sont affichées avec print()."
+        }
+      },
+      {
+        "type": "markdown",
+        "title": "⚡ Quiz rapide",
+        "content": "<p>Répondez vite à ces questions pour tester vos connaissances sur les variables Python.</p>"
+      },
+      {
+        "type": "rapid-mcq",
+        "timeLimit": 15,
+        "questions": [
+          {
+            "question": "Quel type correspond à `False` en Python ?",
+            "options": ["int", "str", "bool", "float"],
+            "correctAnswer": "bool"
+          },
+          {
+            "question": "Quelle variable pourrait stocker une température corporelle ?",
+            "options": ["int", "float", "bool", "str"],
+            "correctAnswer": "float"
+          },
+          {
+            "question": "Comment afficher le nom du patient ?",
+            "options": ["print(nom_patient)", "show(nom_patient)", "display(nom_patient)", "echo(nom_patient)"],
+            "correctAnswer": "print(nom_patient)"
+          }
+        ]
+      }
+    ]
+  }
+  

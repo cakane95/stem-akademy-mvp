@@ -1,0 +1,68 @@
+{
+    "questTitle": "Mission Télécoms : Variables Python",
+    "questCells": [
+      {
+        "type": "markdown",
+        "title": "📱 Bienvenue dans la mission Télécoms",
+        "content": "<h1>Bienvenue dans votre mission Télécoms !</h1><p>Vous travaillez chez un opérateur fictif <strong>SunuConnect</strong>. Aujourd'hui, vous allez apprendre à manipuler des <em>variables</em> Python pour enregistrer des informations simples comme le nom d'un forfait, son prix, et si un client est éligible à une promotion.</p>"
+      },
+      {
+        "type": "code-py",
+        "title": "🔍 Exemple : Déclaration de variables Télécoms",
+        "initialCode": "# Déclarer des variables simples\nnom_forfait = \"Forfait Illimité 30j\"\nprix_pass = 5000  # en FCFA\nclient_est_eligible_promo = True\n\nprint(nom_forfait)\nprint(prix_pass)\nprint(client_est_eligible_promo)"
+      },
+      {
+        "type": "mcq",
+        "question": "En Python, quelle syntaxe est correcte pour stocker le prix d'un pass à 5000 FCFA ?",
+        "options": [
+          "prix_pass = 5000",
+          "5000 = prix_pass",
+          "prix_pass == 5000",
+          "let prix_pass = 5000"
+        ],
+        "correctAnswer": "prix_pass = 5000"
+      },
+      {
+        "type": "markdown",
+        "title": "🛠️ Préparation à l'exercice",
+        "content": "<p>Vous allez maintenant créer vos propres variables pour représenter un forfait télécom. Assurez-vous d'utiliser un nom clair, un prix en entier, et un booléen indiquant si le client est éligible à une promo.</p>"
+      },
+      {
+        "type": "exercice-py",
+        "title": "✍️ Exercice : Déclarer vos variables Télécoms",
+        "instructions": "Déclarez trois variables :\n1. `nom_forfait` (chaîne de caractères)\n2. `prix_pass` (entier)\n3. `client_est_eligible_promo` (booléen)\nPuis affichez-les avec `print()`.",
+        "initialCode": "# Votre code ici\n",
+        "validationRules": {
+          "mockPyBrytResult": "Parfait ✅ Vos variables sont bien déclarées et affichées.",
+          "mockPyBrytFailure": "Vérifiez que les trois variables existent et sont affichées avec print()."
+        }
+      },
+      {
+        "type": "markdown",
+        "title": "⚡ Quiz rapide",
+        "content": "<p>Répondez vite à ces questions pour tester vos connaissances sur les variables Python.</p>"
+      },
+      {
+        "type": "rapid-mcq",
+        "timeLimit": 15,
+        "questions": [
+          {
+            "question": "Quel type de donnée est True en Python ?",
+            "options": ["int", "bool", "str", "float"],
+            "correctAnswer": "bool"
+          },
+          {
+            "question": "Quelle fonction sert à afficher une variable ?",
+            "options": ["echo()", "display()", "print()", "show()"],
+            "correctAnswer": "print()"
+          },
+          {
+            "question": "Laquelle de ces écritures est correcte pour une chaîne de caractères ?",
+            "options": ["nom = Python", "nom = 'Python'", "nom == 'Python'", "nom := 'Python'"],
+            "correctAnswer": "nom = 'Python'"
+          }
+        ]
+      }
+    ]
+  }
+  

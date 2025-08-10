@@ -1,0 +1,68 @@
+{
+    "questTitle": "Mission Finance : Variables Python",
+    "questCells": [
+      {
+        "type": "markdown",
+        "title": "💰 Bienvenue dans la mission Finance",
+        "content": "<h1>Bienvenue dans votre mission Finance !</h1><p>Vous travaillez pour une banque fictive <strong>SunuBank</strong>. Aujourd'hui, vous allez apprendre à manipuler des <em>variables</em> Python pour stocker des informations simples comme un numéro de compte, un solde et l'état du compte.</p>"
+      },
+      {
+        "type": "code-py",
+        "title": "🔍 Exemple : Déclaration de variables bancaires",
+        "initialCode": "# Déclarer des variables simples\nnumero_compte = \"SN123456789\"\nsolde_actuel = 150000  # en FCFA\ncompte_est_actif = True\n\nprint(numero_compte)\nprint(solde_actuel)\nprint(compte_est_actif)"
+      },
+      {
+        "type": "mcq",
+        "question": "Quelle syntaxe est correcte pour créer une variable `solde_actuel` avec la valeur 100000 ?",
+        "options": [
+          "solde_actuel = 100000",
+          "100000 = solde_actuel",
+          "solde_actuel == 100000",
+          "var solde_actuel = 100000"
+        ],
+        "correctAnswer": "solde_actuel = 100000"
+      },
+      {
+        "type": "markdown",
+        "title": "🛠️ Préparation à l'exercice",
+        "content": "<p>Vous allez maintenant créer vos propres variables pour représenter un compte bancaire. Utilisez un numéro de compte sous forme de chaîne, un solde en entier, et un booléen pour indiquer si le compte est actif.</p>"
+      },
+      {
+        "type": "exercice-py",
+        "title": "✍️ Exercice : Déclarer vos variables bancaires",
+        "instructions": "Déclarez trois variables :\n1. `numero_compte` (chaîne de caractères)\n2. `solde_actuel` (entier)\n3. `compte_est_actif` (booléen)\nPuis affichez-les avec `print()`.",
+        "initialCode": "# Votre code ici\n",
+        "validationRules": {
+          "mockPyBrytResult": "Parfait ✅ Vos variables sont bien déclarées et affichées.",
+          "mockPyBrytFailure": "Vérifiez que les trois variables existent et sont affichées avec print()."
+        }
+      },
+      {
+        "type": "markdown",
+        "title": "⚡ Quiz rapide",
+        "content": "<p>Répondez vite à ces questions pour tester vos connaissances sur les variables Python.</p>"
+      },
+      {
+        "type": "rapid-mcq",
+        "timeLimit": 15,
+        "questions": [
+          {
+            "question": "Quel type de donnée est 150000 en Python ?",
+            "options": ["float", "bool", "int", "str"],
+            "correctAnswer": "int"
+          },
+          {
+            "question": "Comment représenter une chaîne de caractères ?",
+            "options": ["'Banque'", "Banque", "Banque()", "`Banque`"],
+            "correctAnswer": "'Banque'"
+          },
+          {
+            "question": "Quelle fonction sert à afficher un solde à l’écran ?",
+            "options": ["show()", "echo()", "print()", "display()"],
+            "correctAnswer": "print()"
+          }
+        ]
+      }
+    ]
+  }
+  
